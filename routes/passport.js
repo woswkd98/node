@@ -10,6 +10,7 @@ const UserModel = require('../model/userInfoModel');
 // 내일해야할것 https://stackhoarder.com/2019/07/17/node-js-passport-js-jwt-token-%EC%9D%B4%EC%9A%A9%ED%95%B4-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EA%B5%AC%ED%98%84/
 // user id, pwd로 스키마 만들어서 비교 새로 만들어야함 
 const bcrypt = require('bcrypt');
+const { isTemplateExpression } = require('typescript');
 const saltRounds = 10;
 
 const isOverlap = async (userId) => {
@@ -23,20 +24,49 @@ const isOverlap = async (userId) => {
 }
 
 
+let userSchema = mongoose.Schema({
+    userId:{type:String, required:true},
+    hashedPwd:{type:String, required:true},
+    name:{type:String, required:true},
+    email:{type:String, required:true},
+});
+
+
+
+
 //
-router.use(new LocalStrategy({
-  usernameField: 'userID',
+var temp = Array();
+var temp2 = "3";
+parseInt();
+router.use('register',new LocalStrategy({
+  usernameField: 'userId',
+  userpassoword : 'hashedPwd'
 }, async (userID, password, done) => {
-    let isOverlaped = await isOverlap(userID);
-    if(isOverlaped === null)
-    {
-      return '아이디가 없음'; // 아이디가 없고 
-    }
-    await bcrypt.compare(password, isOverlaped.hashedPwd, (err, result) => {
-    if(result == true) {
-      return done(null, userID, {message : 'login ok'});
-  }
-  }).catch(err => done(err));
+    try {
+      UserModel.findOne({
+        where : {
+          userID :userID,
+        },
+      }).then(user => {
+        if(user != null) {
+          console.log('username already taken');
+          return done(null, false, {
+            message:'username already taken'
+          }); 
+        }
+        else {
+          bcrypt.hash(password, saltRounds)
+          .then(
+            hashedPassword => {
+               
+            }
+          )
+        }
+        }
+
+      })
+
+    
 
 }))
 

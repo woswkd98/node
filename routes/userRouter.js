@@ -12,9 +12,9 @@ var router = express.Router();
 
 /*
 
-*/
 
-/*
+
+
 router.post('/userCheck',async (req, res) => {
 
   console.log("userCheck");
@@ -76,7 +76,6 @@ const  isOverlap = async (userId) => {
     })
 }
 
-*/
 
 
 
@@ -117,3 +116,4 @@ module.exports = router;
 
 
 
+*/

@@ -48,8 +48,7 @@ class BoardNew extends Component {
          body<textarea ref = {this.body} rows="5"></textarea>    
               
          <LinkButton to = '/boardList' onClick = {this.submit}>새로만들기</LinkButton>
-       
-            {this.props.userID}
+
        </div>
 
         
