@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-//import  Axios  from 'axios';
+import  Axios  from 'axios';
 import {connect} from 'react-redux'
 import {rdLogin} from '../modules/loginReducer'
 class Login extends Component {
@@ -20,19 +20,24 @@ class Login extends Component {
             pwd :this.pwdRef.current.value, //"1234ttac321",
         };
       */
-        /*
-        await Axios.post(
-            'api/user/login', datas).then(res=> {
-                if(res.data.isLogin === true) {
-                    
-                    //로그인 확인
-                    console.log("로그인 완료!");
-                } 
-            });
         
-            */
+        await Axios.post(
+            'api/user/login', {
+                id : "woswkd98",
+                pwd : '123ertr4ttac321'
+
+            }).then(res=> {
+                console.log(res, "datas");
+                    
+                 
+                    
+                   
+                
+            })
+        
+            
            // redux 테스트
-        this.props.onLogin('aawetawetawetgea');
+    
         console.log(this.props.userID);
         
  

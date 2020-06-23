@@ -1,4 +1,5 @@
-/*
+
+
 var express  = require('express');
 var router = express.Router();
 const passport = require('passport');
@@ -7,6 +8,7 @@ const JWTStrategy   = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
 const LocalStrategy = require('passport-local').Strategy;
 const UserModel = require('../model/userInfoModel');
+const secretKey = require('../myConfig/jwtSecretKey')
 // 내일해야할것 https://stackhoarder.com/2019/07/17/node-js-passport-js-jwt-token-%EC%9D%B4%EC%9A%A9%ED%95%B4-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EA%B5%AC%ED%98%84/
 // user id, pwd로 스키마 만들어서 비교 새로 만들어야함 
 const bcrypt = require('bcrypt');
@@ -18,12 +20,14 @@ const isOverlap = async (userId) => {
     return await UserModel.findOne({userId : userId}
       , (err, User) => {
         if(err)console.log(err);
-        console.log(User);
+        console.log(User, "isOverlap user");
         return User;
     })
 }
 
 
+
+/*
 let userSchema = mongoose.Schema({
     userId:{type:String, required:true},
     hashedPwd:{type:String, required:true},
@@ -31,89 +35,107 @@ let userSchema = mongoose.Schema({
     email:{type:String, required:true},
 });
 
+          id : this.idRef.value,
+            pwd : this.pwdRef.value,
+            name : this.nameRef.value,
+            email : this.emailRef.value,
+*/
 
 
 
 //
-var temp = Array();
-var temp2 = "3";
-parseInt();
-router.use('register',new LocalStrategy({
-  usernameField: 'userId',
-  userpassoword : 'hashedPwd'
-}, async (userID, password, done) => {
-    try {
-      UserModel.findOne({
-        where : {
-          userID :userID,
-        },
-      }).then(user => {
-        if(user != null) {
-          console.log('username already taken');
-          return done(null, false, {
-            message:'username already taken'
-          }); 
-        }
-        else {
-          bcrypt.hash(password, saltRounds)
-          .then(
-            hashedPassword => {
-               
-            }
-          )
-        }
-        }
-
-      })
-
-    
-
-}))
 
 
-    
-        
-
-router.post('/login', 
-  async (req, res) => {
-    console.log(req.body);
-    
-    let user = req.body;
-    console.log( req.body);
-    
-    let isOverlaped = await isOverlap(user.id);
-
-    if(isOverlaped === null) 
-    {
-      console.log("해당 아이디가 없습니다");
-      return;
-    }
-    console.log(isOverlaped.hashedPwd,'hashed');
-    console.log(isOverlaped);
-    console.log(user.pwd,'pwd');
-    
-    bcrypt.compare(user.pwd, isOverlaped.hashedPwd, function(err, result) {
-      console.log('1',result);
-      if(result == true) {
-        const token = jwt.sign(user, 'your_jwt_secret');
-        return res.json({
-          isLogin : true,
-          token : token,
-        });
-      }
-      else res.json({
-        isLogin : false,
-        token : null
-      });
-    })
-    //jwt 인증 발급
-    
+passport.use('register', new LocalStrategy({
+    usernameField: 'id',
+    passwordField: 'pwd',
+    session: false,
+  }, 
+  async (id ,pwd, done) => {
+  let error;
+  let data = {
+    id : id,
+    pwd : 0,
   }
+ 
+  
+  console.log("순서 1");
+  if(!checkPwd(id, pwd, error)) {
+    console.log("pwd error");
+    return;
+  }  
+  
+  console.log("순서 2");
+  let isOverlaped = await isOverlap(id);
+  if(isOverlaped!== null) {
+    console.log('중복');
+    return done(null, false, 
+      {
+       message : "아이디 중복",
+      }
+    ); 
+  }
+
+  console.log("순서 3");
+  await bcrypt.genSalt(saltRounds, async (err,salt) => {
+    console.log("순서 4");
+    
+    await bcrypt.hash(pwd, salt, async(err,hash)=> {
+      data.pwd = hash;
+      console.log(data.pwd, pwd , "bcrypt.hash");
+      return done(null, data);;
+    })
+  })
+ 
+}));
+const opts = {
+  jwtFromRequest: ExtractJWT.fromAuthHeaderWithScheme('JWT'),
+  secretOrKey: secretKey.secretKey,
+};
+
+passport.use(
+  'login',
+  new LocalStrategy(
+    {
+      usernameField: 'id',
+      passwordField: 'pwd',
+      session: false,
+    },
+    async (id,pwd, done) => {
+      let isOverlaped = await isOverlap(id);
+
+      await bcrypt.compare(pwd, isOverlaped.hashedPwd).then(rs => {
+        if(rs === true) {
+          console.log("compare isTrue",rs);
+          
+          return done(null, rs);
+        } 
+        else {
+          console.log("compare isFalse",rs);
+          return done(null, rs);
+        }
+      })      
+
+    }
+  )
+)
+    
+passport.use(
+  'jwt',
+  new JWTStrategy(opts, async (jwt_payload, done) => {
+   
+    let rs = await isOverlap(jwt_payload.id);
+    console.log("abc");
+    
+    return done(null,rs);
+  }),
 );
 
+
+
+
+    
         
-        
-     
 
 
 const checkPwd = (id ,pwd, error) => {
@@ -147,5 +169,4 @@ const checkPwd = (id ,pwd, error) => {
   return true;
 }
 
-
-module.exports = passport;*/
+module.exports = passport;
