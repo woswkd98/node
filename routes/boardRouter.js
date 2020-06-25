@@ -9,12 +9,12 @@ var moment = require('moment');
 require('moment-timezone');
 moment.tz.setDefault("Asia/Seoul");
 
+const passportJWT = require('passport-jwt');
 
 let counterSchema = mongoose.Schema( // 보드 인덱스에 대한 카운터
    { 
      name : {type:String, required: true},
      counter : Number,
-    
    }
 )
 
@@ -60,7 +60,6 @@ counter.find({}).countDocuments(
 //Users.findOne().select('-_id name age') -는 걔를 뺀 나머지를 들고온다    
 router.get( // 목록쪽에서 불러올 애들
   '/', (req, res) => {
-
       postModel.find({})
           .select('-_id post_id title createdAt') // 모델로 찾는다 {} 전체 
           .sort('~post_id')
@@ -79,9 +78,6 @@ router.post('/board', (req,res) => {
     post_id : req.body.index,
   }).exec((err, post) => {
     if(err) return res.json(err);
-    console.log();
-    
-
     res.json({post : post});
   })
 })
@@ -90,6 +86,7 @@ router.post('/board', (req,res) => {
 router.post('/boardEdit', (req,res) => {
 
   const updateDate = moment().format('YYYY-MM-DD HH:mm:ss');
+  
   console.log(updateDate,"date");
   
   postModel.updateOne( 

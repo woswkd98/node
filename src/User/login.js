@@ -1,46 +1,30 @@
 import React, { Component } from 'react'
 import  Axios  from 'axios';
-import {connect} from 'react-redux'
-import {rdLogin} from '../modules/loginReducer'
-class Login extends Component {
+
+export default class Login extends Component {
 
     constructor(props) {
         super(props);
+        
         this.idRef = React.createRef();
         this.pwdRef = React.createRef();
         
+       
         
     }
 
 
     submit = async() => {
-        /*
+        
         let datas = { 
             id : this.idRef.current.value, 
             pwd :this.pwdRef.current.value, //"1234ttac321",
         };
-      */
+      
         
-        await Axios.post(
-            'api/user/login', {
-                id : "woswkd98",
-                pwd : '123ertr4ttac321'
-
-            }).then(res=> {
-                console.log(res, "datas");
-                    
-                 
-                    
-                   
-                
-            })
-        
+        await Axios.post("/api/user/login",datas);
             
-           // redux 테스트
-    
-        console.log(this.props.userID);
-        
- 
+         
     }
 
 
@@ -55,21 +39,3 @@ class Login extends Component {
     }
 }
 
-const stateToProps = (state) => ({
-    userID: state.setLoginState.userID,
-})
-  
-
-const mapDispatchToProps = (dispatch) => ({
-    onLogin : (userID) => {
-        dispatch(rdLogin(userID));
-    },
-
-});
-
-
-
-export default connect(
-    stateToProps,
-    mapDispatchToProps
-  )(Login); // 나중에 여기를 바꾸면 된다 

@@ -12,7 +12,7 @@ import {composeWithDevTools } from 'redux-devtools-extension'
 
 import {combineReducers } from 'redux'
 import setLoginState from './modules/loginReducer' 
-
+import { CookiesProvider } from 'react-cookie';
 import counter3 from './modules/awetawte'
 
 //4
@@ -20,23 +20,25 @@ import counter3 from './modules/awetawte'
 let bindReducer = combineReducers({
   setLoginState,
   counter3,
-
 });
 
 
 
 //const store = createStore(login,composeWithDevTools());
 const store = createStore(bindReducer,composeWithDevTools());
-
+// <BrowserRouter> 라우팅 
+//<CookiesProvider> 토큰 저장을 위한 쿠키 사용
 ReactDOM.render(
 
  
   <Provider store = {store}>
-  <BrowserRouter>
+  <CookiesProvider>
+  <BrowserRouter> 
   <React.StrictMode>
     <App />
   </React.StrictMode>
   </BrowserRouter>
+  </CookiesProvider>
   </Provider>
 
 ,

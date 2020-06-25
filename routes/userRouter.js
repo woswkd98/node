@@ -29,6 +29,7 @@ router.post('/userRegister',async (req, res, next) => {
   await passport.authenticate('register', async (err, user, info) => {
 
     data.hashedPwd = user.pwd;
+
     UserInfo.create(data,function (err, contact) {
       if(err) {
         console.log(err);
@@ -44,15 +45,23 @@ router.post('/userRegister',async (req, res, next) => {
 
 router.post('/login',async (req, res, next) => {
 
-  console.log("incomeidpwd",req.body);
-  await passport.authenticate('login', async (err, isLogin, info) => {
+  await passport.authenticate('login',  (err, isLogin, info) => {
     if(isLogin === true) {
-      // jwt 사인 필요
-      const token = jwt.sign({ id: req.body.id }, secretKey.secretKey);
-           res.json({
-              auth: req.body.id,
-              token: token,
-              message: 'user found & logged in',
+      // jwt 사인해 놨다가 다른곳에서 작성할때 jwt로 vertify시킨다 
+      console.log(req.body.id,"req.body.id");
+      
+      const token = jwt.sign(
+        { 
+          sub : req.body,
+          exp: Math.floor(Date.now() / 1000) + (60 * 60) * 12 , // 한시간으로 제한 시간을 뒀다
+          secretKey : secretKey.secretKey,
+        }).catch(err=> console.log(err))
+        console.log(token);
+        
+      res.json({
+          auth: req.body.id,
+          token: token,
+          message: 'user found & logged in',  
       });
     } else {
       res.json({
