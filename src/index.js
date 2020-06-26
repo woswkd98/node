@@ -12,28 +12,28 @@ import {composeWithDevTools } from 'redux-devtools-extension'
 
 import {combineReducers } from 'redux'
 import  createSagaMiddleware from 'redux-saga'
-import { CookiesProvider } from 'react-cookie';
+import rootReducer from './redux'
+//import { CookiesProvider } from 'react-cookie';
 
 //4
 
 
 
-//const store = createStore(bindReducer, composeWithDevTools());
+const store = createStore(rootReducer
+  , composeWithDevTools());
 // <BrowserRouter> 라우팅 
 //<CookiesProvider> 토큰 저장을 위한 쿠키 사용
 ReactDOM.render(
 
- 
- //<Provider store = {store}>
-  <CookiesProvider>
+ //<CookiesProvider>
+ <Provider store = {store}>
   <BrowserRouter> 
   <React.StrictMode>
     <App />
   </React.StrictMode>
   </BrowserRouter>
-  </CookiesProvider>
- //</Provider>
-
+ </Provider>
+// </CookiesProvider>
 ,
   document.getElementById('root')
 );

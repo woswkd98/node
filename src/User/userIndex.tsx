@@ -12,7 +12,6 @@ let userSchema = mongoose.Schema({
 */
 
 class userSchema {
-    
     userId = String();
     hashedPwd = String();
     name = String();
