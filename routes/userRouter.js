@@ -49,13 +49,15 @@ router.post('/login',async (req, res, next) => {
     if(isLogin === true) {
       // jwt 사인해 놨다가 다른곳에서 작성할때 jwt로 vertify시킨다 
       console.log(req.body.id,"req.body.id");
-      
+      console.log(secretKey.secretKey,"key");
       const token = jwt.sign(
         { 
-          sub : req.body,
-          exp: Math.floor(Date.now() / 1000) + (60 * 60) * 12 , // 한시간으로 제한 시간을 뒀다
-          secretKey : secretKey.secretKey,
-        }).catch(err=> console.log(err))
+          exp: Math.floor(Date.now() / 1000) + (60 * 60), //1 시간
+          id : JSON.stringify(req.body.id),
+      }, secretKey.secretKey, {
+
+
+        });
         console.log(token);
         
       res.json({
@@ -70,7 +72,6 @@ router.post('/login',async (req, res, next) => {
         message: 'user not login',
       })
     }
-
   })(req, res, next)
 });
 

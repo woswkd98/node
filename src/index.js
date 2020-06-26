@@ -11,27 +11,20 @@ import { createStore}  from 'redux' // 전역 데이터에 접근하기 위해
 import {composeWithDevTools } from 'redux-devtools-extension'
 
 import {combineReducers } from 'redux'
-import setLoginState from './modules/loginReducer' 
+import  createSagaMiddleware from 'redux-saga'
 import { CookiesProvider } from 'react-cookie';
-import counter3 from './modules/awetawte'
 
 //4
 
-let bindReducer = combineReducers({
-  setLoginState,
-  counter3,
-});
 
 
-
-//const store = createStore(login,composeWithDevTools());
-const store = createStore(bindReducer,composeWithDevTools());
+//const store = createStore(bindReducer, composeWithDevTools());
 // <BrowserRouter> 라우팅 
 //<CookiesProvider> 토큰 저장을 위한 쿠키 사용
 ReactDOM.render(
 
  
-  <Provider store = {store}>
+ //<Provider store = {store}>
   <CookiesProvider>
   <BrowserRouter> 
   <React.StrictMode>
@@ -39,7 +32,7 @@ ReactDOM.render(
   </React.StrictMode>
   </BrowserRouter>
   </CookiesProvider>
-  </Provider>
+ //</Provider>
 
 ,
   document.getElementById('root')

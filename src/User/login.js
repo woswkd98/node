@@ -1,41 +1,62 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import  Axios  from 'axios';
+import { withCookies, Cookies }  from  'react-cookie'
+import { instanceOf } from 'prop-types';
 
-export default class Login extends Component {
+// 쿠키쓰는 양식까지
+const Login = (props) => {
 
-    constructor(props) {
-        super(props);
-        
-        this.idRef = React.createRef();
-        this.pwdRef = React.createRef();
-        
-       
-        
-    }
+   
+    let idRef = React.createRef();
+    let pwdRef = React.createRef();    
+    const {
+        cookies,
 
+    } = props
 
-    submit = async() => {
+    const [name, setName] = useState('');
+    let submit = async() => {
         
         let datas = { 
-            id : this.idRef.current.value, 
-            pwd :this.pwdRef.current.value, //"1234ttac321",
+            id : idRef.current.value, 
+            pwd :pwdRef.current.value, //"1234ttac321",
         };
-      
+
+     
         
-        await Axios.post("/api/user/login",datas);
-            
-         
-    }
-
-
-    render() {
-        return (
-            <div>
-                id : <input type = "text" ref = {this.idRef}></input>
-                pwd : <input type = "text" ref = {this.pwdRef}></input>
-                <button onClick = {this.submit}>전송</button>
-            </div>
+        await Axios.post("/api/user/login",datas).then(
+            (res) => {
+                console.log(res.data.auth)
+                console.log(res.data.token)
+              
+                cookies.set('id',res.data.auth ,{ path: '/' });
+                cookies.set('token',res.data.token,{ path: '/' });
+                
+                setName(cookies.get('id'));
+                console.log(cookies.get('id'),"test");
+                
+            }
         )
+
+        
+     
     }
+    
+ 
+    return (
+        <div>
+            id : <input type = "text" ref = {idRef}></input>
+            pwd : <input type = "text" ref = {pwdRef}></input>
+            awetyawety{name}
+            <button onClick = {submit}>전송</button>
+            
+        </div>
+    )
+    
 }
 
+Login.propTypes = {
+    cookies: instanceOf(Cookies).isRequired
+}
+  
+export default withCookies(Login);

@@ -6,8 +6,7 @@ let cors = require('cors');
 const bodyParser = require('body-parser');
 
 const route = require('../routes/index');
-
-
+const socket = require('../routes/socketSetting');
 
 const port = 3001;
 const connection = require('../src/connection');
@@ -30,8 +29,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/api',route);
 
+let http = socket.socketConnection(app);
 
-app.listen(port, ()=>{
+http.listen(port, ()=>{
     console.log(`express is running on ${port}`);
 })
 
