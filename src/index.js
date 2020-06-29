@@ -12,7 +12,7 @@ import {composeWithDevTools } from 'redux-devtools-extension'
 
 import {combineReducers } from 'redux'
 import  createSagaMiddleware from 'redux-saga'
-import rootReducer from './redux'
+import rootReducer from '../src/redux/reducers/rootReducer'
 //import { CookiesProvider } from 'react-cookie';
 
 //4
