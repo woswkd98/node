@@ -40,7 +40,12 @@ class App extends Component {
           <Route path="/boardEdit/:post_id" component = {BoardEdit} exact = {true}/>
 
           
-
+          <button onClick = {
+            () => {
+              localStorage.setItem('userID', null);
+              localStorage.setItem('userToken',null);
+            }
+          }>임시 로그아웃</button>
         </div>
     );
     ;

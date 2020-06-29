@@ -20,6 +20,8 @@ const Login = ({login, onlogout}) => {
             id : "woswkd98",
             pwd :"1234ttac321"
         }
+
+        
  
         await Axios.post("/api/user/login",datas).then(
             (res) => {
@@ -30,9 +32,9 @@ const Login = ({login, onlogout}) => {
                         id : res.data.auth,
                         token : res.data.token
                     });
-                
-                    localStorage.setItem('userID', JSON.stringify(res.data.auth));
-                    localStorage.setItem('userToken', JSON.stringify(res.data.token));
+                    console.log("boardNew",localStorage.getItem('userID'));
+                    localStorage.setItem('userID', res.data.auth);
+                    localStorage.setItem('userToken', res.data.token);
                     
                 }    
             }
@@ -47,7 +49,7 @@ const Login = ({login, onlogout}) => {
             id : <input type = "text" ref = {idRef}></input>
             pwd : <input type = "text" ref = {pwdRef}></input>
     
-            <button onClick = {submit}>전송</button>
+            <button onClick = {submit}>로그인</button>
             
         </div>
     )

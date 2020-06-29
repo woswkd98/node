@@ -13,8 +13,8 @@ export const login = createAction(
 export const logout = createAction(
         LOGOUT,
         input => ({
-            id : input.id,
-            token : input.token
+            id : '',
+            token : ''
         })
     );
 

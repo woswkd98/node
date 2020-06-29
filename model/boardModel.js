@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 
 // schema
 var postSchema = mongoose.Schema({
+  auth : {type:String, required : true},
   title:{type:String, required:true},
   body:{type:String, required:true},
   createdAt:{type:Date, default:Date.now},

@@ -8,7 +8,7 @@ router.use(cors());
 var moment = require('moment');
 require('moment-timezone');
 moment.tz.setDefault("Asia/Seoul");
-
+const vertify = require('./common').jwtVertify
 const passportJWT = require('passport-jwt');
 
 let counterSchema = mongoose.Schema( // 보드 인덱스에 대한 카운터
@@ -74,24 +74,42 @@ router.post('/board', (req,res) => {
  
   console.log(req.body.index,"getIndexBoard");
   
-  postModel.find({
-    post_id : req.body.index,
-  }).exec((err, post) => {
-    if(err) return res.json(err);
-    res.json({post : post});
-  })
+  const rs = vertify(req.body.id, req.body.token);
+  if(rs=== true) {
+    postModel.find({
+      post_id : req.body.index,
+    }).exec((err, post) => {
+      if(err) return res.json(err);
+      res.json({post : post});
+    })
+  } else {
+    res.json({rs : false});
+  }
+
 })
 
 
 router.post('/boardEdit', (req,res) => {
+  
+  const rs = vertify(req.body.post_id, req.body.token);
+  if(rs === false) {
+    return res.json({
+      rs : "인증 만료"
+    })
+  }
+
 
   const updateDate = moment().format('YYYY-MM-DD HH:mm:ss');
   
   console.log(updateDate,"date");
   
   postModel.updateOne( 
-    { post_id : req.body.post_id }, 
-    { $set: 
+    { 
+      $and : [ 
+        { post_id : req.body.post_id },
+        { auth : req.body.auth }
+      ],
+      $set: 
       { 
         title: req.body.title,
         body : req.body.body,
@@ -113,14 +131,27 @@ router.post('/boardNew',async function (req, res) {
   //findOneAndUpdate 찾아서 업데이트 시킨다
   //{new: true} 업데이트 된 문서를 반환해라
 
+  
+  //const rs = vertify("awetaweyt", "req.body.token");
 
+  
+  const rs = vertify(req.body.id, req.body.token);
+  if(rs === false) {
+    return res.json({
+      rs : "인증 만료"
+    })
+
+  }
   let docCount = await counter.findOneAndUpdate(
     {name : 'boardIndex'}, {$inc : {counter : 1}}
      
-  
   );
 
+  console.log("docCount = await counter.findOneAndUpdate");
+  
+
   let post =  new postModel();
+  post.auth = req.body.id;
   post.post_id = docCount.counter;
   post.title = req.body.title;
   post.body = req.body.body;
@@ -129,18 +160,28 @@ router.post('/boardNew',async function (req, res) {
   post.createdAt = moment().format('YYYY-MM-DD HH:mm:ss');  
   await postModel.create(post , function (err, contact) {
     if (err) return res.json(err);
-    console.log(post.post_id, post.title, post.body, post.createdAt);
+    res.json({
+      rs : "작성 성공"
+    })
   });
 });
 
 
 // 삭제 
 router.post('/delete', (req,res) => {
- 
-  console.log(req.body.index, 'delete');
+  const rs = vertify(req.body.id, req.body.token);
+  if(rs === false) {
+    return res.json({
+      rs : "인증 만료"
+    })
 
-  postModel.deleteOne({
-    post_id : req.body.index,
+  }
+
+
+  postModel.deleteOne(
+    { $and : [ 
+    {post_id : req.body.index},
+    {auth :req.body.auth} ]
   }).exec((err, result) =>{
 
     if(err) console.log(err);

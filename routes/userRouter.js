@@ -77,19 +77,6 @@ router.post('/login',async (req, res, next) => {
 
 
 
-//vertify
-router.post('/check',async (req, res, next) => { 
-    if(jwt.verify(req.body.token, secretKey.secretKey).id === req.body.id) {
-      res.json({
-        check : true,
-      })
-    }
-    else {
-      res.json({
-        check : false,
-      })
-    }
-})
 
 
 module.exports = router;

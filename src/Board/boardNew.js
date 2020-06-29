@@ -15,17 +15,35 @@ class BoardNew extends Component {
     }
 
     submit = async () => {
+
+        console.log("boardNew",localStorage.getItem('userID'));
+        
         let datas = {
+            id : localStorage.getItem('userID'),
+            token : localStorage.getItem('userToken'),
             title :   this.title.current.value, 
             body : this.body.current.value,
         };
+        
+
         if(datas.title === '' || datas.body ===  ''){
          
             alert('제목 또는 내용이 작성되지 않았습니다')
             return;
         }
+        
+        await Axios.post('/api/board/boardNew', datas).then(
+            res => {
+                if(res.data.rs === '작성 완료') {
+                    // 작성 완료
 
-        return await Axios.post('/api/board/boardNew', datas);
+                }
+                else if(res.data.rs === '인증 만료'){
+                    // 작성 실패 // 로그인 페이지로 감
+                    
+                }
+            }
+        );
 
        //console.log( this.props.store.getState().userID);
         
@@ -47,7 +65,7 @@ class BoardNew extends Component {
          <br></br>
          body<textarea ref = {this.body} rows="5"></textarea>    
               
-         <LinkButton to = '/boardList' onClick = {this.submit}>새로만들기</LinkButton>
+         <button to = '/boardList' onClick = {this.submit}>새로만들기</button>
 
        </div>
 
@@ -56,15 +74,6 @@ class BoardNew extends Component {
     }
 }
 
-const mapStateToProps = ( state ) => ({
-
-    userID : state.setLoginState.userID,
-  });
-
-
-export default connect(
-  mapStateToProps,
-  null
-)(BoardNew);
+export default (BoardNew);
 
 //export default BoardNew;
