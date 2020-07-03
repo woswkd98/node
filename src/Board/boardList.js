@@ -25,9 +25,12 @@ class BoardList extends Component {
             return response.data.posts; 
 
         }).then((val) => {
+            console.log(val);
+            
             this.setState({
                 compList : [ ...val.map((val, k) => {
                     return <BoardCol 
+                    auth = {val.auth}
                     title = {val.title}
                     createdAt = {val.createdAt}
                     updatedAt = {val.updatedAt}
@@ -35,7 +38,6 @@ class BoardList extends Component {
                 />})]
                 })
         })
-    
         
     }
 
@@ -45,6 +47,7 @@ class BoardList extends Component {
     render() {
        
 
+    
         // react에서는 thead tbody가 있어야한다 
     return (
         <div>
@@ -52,6 +55,7 @@ class BoardList extends Component {
             <thead>
                 <tr>
                 <th>Index</th>
+                <th>auth</th>
 	            <th>title</th>
 	            <th>createdAt</th>
                 <th>updatedAt</th>

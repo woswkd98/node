@@ -16,7 +16,7 @@ class BoardNew extends Component {
 
     submit = async () => {
 
-        console.log("boardNew",localStorage.getItem('userID'));
+      
         
         let datas = {
             id : localStorage.getItem('userID'),
@@ -65,7 +65,8 @@ class BoardNew extends Component {
          <br></br>
          body<textarea ref = {this.body} rows="5"></textarea>    
               
-         <button to = '/boardList' onClick = {this.submit}>새로만들기</button>
+         <LinkButton to='/boardList'
+            onClick={this.submit}>submit</LinkButton>
 
        </div>
 

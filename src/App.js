@@ -19,7 +19,8 @@ import TopHeader from './top/topHeader'
 //import { response } from 'express'; 가끔 response라고 쓰면 얘가 이렇게 걸어버리는데 바로 에러뜬다 조심하자
 import TestSocket from './publicComponent/test/socket'
 import CookieRs from './publicComponent/test/CookieRs'
-
+import RequestDetail from '../src/project/RequestDetail'
+import Test3 from './publicComponent/test/test3';
 class App extends Component {
   
     
@@ -39,11 +40,11 @@ class App extends Component {
           <Route path="/board/:post_id" component = {Board} exact = {true}/>
           <Route path="/boardEdit/:post_id" component = {BoardEdit} exact = {true}/>
 
-          
+        <Test3/>   
           <button onClick = {
             () => {
-              localStorage.setItem('userID', null);
-              localStorage.setItem('userToken',null);
+              localStorage.removeItem('userID');
+              localStorage.removeItem('userToken');
             }
           }>임시 로그아웃</button>
         </div>

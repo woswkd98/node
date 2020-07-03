@@ -12,6 +12,8 @@ export default class BoardEdit extends Component {
 
     submit =  () => {
         let datas = {
+            id : localStorage.getItem('userID'),
+            token : localStorage.getItem('userToken'),
             post_id : this.props.match.params.post_id,
             title :   this.title.current.value, 
             body : this.body.current.value,
@@ -22,9 +24,10 @@ export default class BoardEdit extends Component {
             return;
         }
     
+        console.log(datas);
         
         
-        Axios.post('api/board/boardEdit', datas);
+        Axios.post('/api/board/boardEdit', datas);
         
         
     }

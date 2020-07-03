@@ -29,9 +29,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/api',route);
 
-let http = socket.socketConnection(app);
-
-http.listen(port, ()=>{
+app.listen(port, ()=>{
     console.log(`express is running on ${port}`);
 })
 

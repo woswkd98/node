@@ -10,37 +10,36 @@ const Login = ({login, onlogout}) => {
     let pwdRef = React.createRef();    
        
     let submit = async() => {
-        
-        /*
         let datas = { 
             id : idRef.current.value, 
             pwd :pwdRef.current.value, //"1234ttac321",
-        };*/
+        };
+        /*
         let datas = { 
             id : "woswkd98",
             pwd :"1234ttac321"
         }
 
-        
+        */
  
         await Axios.post("/api/user/login",datas).then(
             (res) => {
-                
+            
                 console.log(res);
+                
                 if(res.data.auth !==  null && res.data.token !== null) {
                     login({
                         id : res.data.auth,
                         token : res.data.token
                     });
+                    
                     console.log("boardNew",localStorage.getItem('userID'));
+                    
                     localStorage.setItem('userID', res.data.auth);
                     localStorage.setItem('userToken', res.data.token);
-                    
                 }    
             }
         )
-
-        
     }
     
  
@@ -65,6 +64,4 @@ export default connect(
     }), {
         login,
     }
-    
-
 )(Login);

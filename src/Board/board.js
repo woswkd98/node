@@ -13,12 +13,24 @@ class Board extends Component {
     }
 
     componentDidMount() {
-        let data = {index : this.props.match.params.post_id}
+        let data = {
+            id : localStorage.getItem('userID'),
+            token : localStorage.getItem('userToken'),
+            index : this.props.match.params.post_id}
+         console.log("awetawet",data);
          
         Axios.post('/api/board/board', data)
         .then(response => {
+
             let array = response.data.post;
-            console.log(array);
+           
+            if(array === null) 
+            {
+                console.log("null",array);
+                return;
+            }
+            console.log("awetawet",array);
+         
             
 
             if(array.length === 0)

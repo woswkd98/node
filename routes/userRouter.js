@@ -54,13 +54,10 @@ router.post('/login',async (req, res, next) => {
         { 
           exp: Math.floor(Date.now() / 1000) + (60 * 60), //1 시간
           id : JSON.stringify(req.body.id),
-      }, secretKey.secretKey, {
-
-
-        });
+        }, secretKey.secretKey, {});
         console.log(token);
         
-      res.json({
+        res.json({
           auth: req.body.id,
           token: token,
           message: 'user found & logged in',  

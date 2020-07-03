@@ -12,16 +12,22 @@ const BoardCol= (props) => {
         title,
         createdAt,
         updatedAt,
-        history
+        auth,
+        history,
       } = props;
 
 
-    const linkPath = '/board/' + index;
-    //  console.log(linkPath);
+  const linkPath = '/board/' + index;
+     console.log(linkPath);
    const deleteCol = () => {
     
       // 나중엔 여기에 작성자도 추가할 예정      
-        let temp =  {index : index};
+        let temp =  {
+          id : localStorage.getItem('userID'),
+          token : localStorage.getItem('userToken'),
+          index : index
+        
+        };
         Axios.post('/api/board/delete',temp);
       
         
@@ -32,8 +38,9 @@ const BoardCol= (props) => {
            
                 <tr>
                 <td>{index}</td>
+                <td>{auth}</td>
                 <td>
-                <Link to = {linkPath }>
+                <Link to = {linkPath}>
                     {title}
                   </Link>
                 </td>
@@ -44,10 +51,6 @@ const BoardCol= (props) => {
                 }
                 }>삭제</button></td>
                 </tr>
-
-
-                
- 
     );
 
           

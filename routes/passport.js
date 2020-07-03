@@ -11,15 +11,13 @@ const UserModel = require('../model/userInfoModel');
 const secretKey = require('../myConfig/jwtSecretKey')
 
 const bcrypt = require('bcrypt');
-const { isTemplateExpression } = require('typescript');
+
 const saltRounds = 10;
 
 const isOverlap = async (userId) => {
-    console.log(userId);
     return await UserModel.findOne({userId : userId}
       , (err, User) => {
         if(err)console.log(err);
-        console.log(User, "isOverlap user");
         return User;
     })
 }
