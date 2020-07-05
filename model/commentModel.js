@@ -15,6 +15,7 @@ var commentSchema = mongoose.Schema({
     body:{type:String, required:true},
     createdAt:{type:String},
     updatedAt:{type:String},
+    isActive : {type:Boolean, required:true},
   });
 
 var commentModel = mongoose.model('comment', commentSchema);

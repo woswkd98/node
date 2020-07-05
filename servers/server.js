@@ -6,7 +6,7 @@ let cors = require('cors');
 const bodyParser = require('body-parser');
 
 const route = require('../routes/index');
-const socket = require('../routes/socketSetting');
+
 
 const port = 3001;
 const connection = require('../src/connection');

@@ -4,7 +4,7 @@ export default class test3 extends Component {
     componentDidMount() {
 
         
-            Axios.get('http://localhost:1234/hello')
+            Axios.get('http://localhost:1234/webApi/hello')
             .then(response => {
                 console.log(response);
             })
