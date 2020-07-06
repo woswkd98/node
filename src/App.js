@@ -21,6 +21,7 @@ import TestSocket from './publicComponent/test/socket'
 import CookieRs from './publicComponent/test/CookieRs'
 import RequestDetail from '../src/project/RequestDetail'
 import Test3 from './publicComponent/test/test3';
+import Enroll from './project/Enroll'
 class App extends Component {
   
     
@@ -39,8 +40,8 @@ class App extends Component {
           <Route path="/surveyList" component={SurveyList} exact = {true}  />
           <Route path="/board/:post_id" component = {Board} exact = {true}/>
           <Route path="/boardEdit/:post_id" component = {BoardEdit} exact = {true}/>
-
-        <Test3/>   
+          <Route path="/Enroll" component={Enroll} exact = {true}  />
+          <Test3/>
           <button onClick = {
             () => {
               localStorage.removeItem('userID');

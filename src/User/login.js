@@ -10,17 +10,17 @@ const Login = ({login, onlogout}) => {
     let pwdRef = React.createRef();    
        
     let submit = async() => {
-        let datas = { 
+         /*let datas = { 
             id : idRef.current.value, 
             pwd :pwdRef.current.value, //"1234ttac321",
         };
-        /*
+         */
         let datas = { 
             id : "woswkd98",
             pwd :"1234ttac321"
         }
 
-        */
+      
  
         await Axios.post("/api/user/login",datas).then(
             (res) => {

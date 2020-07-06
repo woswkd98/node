@@ -36,18 +36,6 @@ router.post('/requestDetail', (req,res) => {
 })
 
 
-let requestSchema2 = mongoose.Schema({
-    title : {type:String, required:true},
-    userId : {type:String, required:true}, 
-    detail : {type:String, required:true},
-    category : {type:String, required:true},
-    uploadAt : {type:String, required:true},
-    deadLine : {type:String, required:true},
-    tags :[{a : String}]
-});
-
-var count = 0;
-const RequestSchema2 = mongoose.model('request2', requestSchema2 );
 
 /*
 commentModel.create({
@@ -64,20 +52,6 @@ commentModel.create({
     })
   });
 */
-router.post('/abcdefg', (req,res) => {
-    count++;
-    RequestSchema2.create( {
-        title: "as" + count,
-        userId : "1254r",
-        detail : "21353",
-        category : "123r54",
-        uploadAt : "sdfbsdf",
-        deadLine : "135dsg",
-    }, function (err, contact) {
-        contact.tags.push({a : "1231515" + count});
-        res.json(contact);
-    })
-})
 
 /*
 let biddingSchema = mongoose.Schema({
